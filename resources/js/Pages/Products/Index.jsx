@@ -5,7 +5,7 @@ import Paginator from '@/Components/Paginator';
 import Products from '@/Components/Products';
 
 export default function Index({ products, title }) {
-    // 
+    const formatNumber = (number) => new Intl.NumberFormat('id-ID').format(number);
     return (
         <>
             <Head title={title} />

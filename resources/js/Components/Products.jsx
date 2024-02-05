@@ -1,6 +1,7 @@
 import { data } from "autoprefixer";
 import { useState } from "react";
 import ShoppingCart from "./ShoppingCart";
+import { formatNumber } from "./NumberUtils";
 export default function Products ( { products } ) {
     const [addToCart, setAddToCart] = useState([]);
 
@@ -38,7 +39,7 @@ export default function Products ( { products } ) {
         <div className="card w-[200px] bg-white hover:shadow-lg p-3 mt-3 rounded-lg cursor-pointer" key={product.id}>
             <img src={product.image} alt="product" height={200} width={200}/>
             <div className="card-header">
-                <h3 className="text-xl font-bold"><sup>Rp</sup>{product.price}</h3>
+                <h3 className="text-xl font-bold"><sup>Rp</sup>{formatNumber(product.price)}</h3>
             </div>
             <div className="card-body">
                 <small className="text-slate-600">{product.code}</small>
