@@ -28,23 +28,25 @@ function ShoppingCart({ cart, updateCartQuantities }) {
   function removeQuantity(product) {
     const updatedQuantities = quantities.map((item) => (item.id === product.id ? { ...item, quantity: item.quantity - 1 } : item));
     setQuantities(updatedQuantities);
+    updateCartQuantities(updatedQuantities);
   }
 
-  //   const checkout = () => {
-  //     // Here you would typically send a request to your server to process the order and handle payment
-  //     console.log("Order processed:", cart);
+  const checkout = () => {
+    // Here you would typically send a request to your server to process the order and handle payment
+    setShowModal(true);
+    console.log("Order processed:", cart);
 
-  //     // After successful processing, you might want to reset the cart or redirect to a thank-you page
-  //     // setCart([]);
-  //   };
+    // After successful processing, you might want to reset the cart or redirect to a thank-you page
+    setCart([]);
+  };
 
   function formatPrice(price) {
     return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(price);
   }
 
-  function checkout(checkout) {
-    setShowModal(true);
-  }
+  //   function checkout(checkout) {
+  //     setShowModal(true);
+  //   }
 
   const closeModal = () => {
     setShowModal(false);
@@ -53,7 +55,7 @@ function ShoppingCart({ cart, updateCartQuantities }) {
   return (
     <>
       <div>
-        <div id='shopping-cart' className='bg-slate-100 h-[75%] grow-0 rounded-t-xl p-5 relative overflow-auto'>
+        <div id='shopping-cart' className='bg-slate-100 h-[75%] rounded-t-xl p-5 overflow-auto'>
           <h2 className='text-2xl font-bold'>Order Summary</h2>
           {quantities.length === 0 ? (
             <div className='flex items-center justify-center h-[75%]'>
@@ -68,8 +70,9 @@ function ShoppingCart({ cart, updateCartQuantities }) {
                   <img src={item.image} alt='product-name' className='w-[75px] h-[75px]' />
                   <div className='grow'>
                     <h3 className='text-sm font-bold'>{item.name}</h3>
+                    <h3 className='text-sm'>{formatPrice(item.price)}</h3>
                     <div className='flex gap-3 items-center justify-between'>
-                      <h3 className='text-sm'>{formatPrice(item.price)}</h3>
+                      <h3 className='text-sm text-slate-600'>Qty</h3>
                       <div>
                         <button className='mr-2 px-2 bg-white' onClick={() => removeQuantity(item)} disabled={item.quantity <= 1}>
                           -
@@ -80,7 +83,7 @@ function ShoppingCart({ cart, updateCartQuantities }) {
                         </button>
                       </div>
                     </div>
-                    <h3 className='text-xs mt-2 font-bold text-slate-600'>Subtotal: ${formatNumber(item.price * item.quantity)}</h3>
+                    <h3 className='text-xs mt-2 font-bold text-slate-600'>Subtotal: {formatPrice(item.price * item.quantity)}</h3>
                   </div>
                 </div>
               </div>
@@ -90,9 +93,7 @@ function ShoppingCart({ cart, updateCartQuantities }) {
         <div className='h-[25%] w-full bg-slate-200 rounded-b-xl text-slate-800 p-5'>
           {quantities.length > 0 && (
             <>
-              <h3 className='text-lg font-bold'>
-                Total: <sup>Rp</sup> {formatNumber(total)}
-              </h3>
+              <h3 className='text-lg font-bold'>Total: {formatPrice(total)}</h3>
               <button className='mt-5 w-full bg-slate-800 text-white p-2 rounded-lg' onClick={() => checkout(cart)}>
                 Checkout
               </button>
@@ -102,23 +103,28 @@ function ShoppingCart({ cart, updateCartQuantities }) {
         <Modal show={showModal} onClose={closeModal} maxWidth='2xl'>
           <div className='p-6'>
             <h2 className='text-2xl font-bold'>Order Summary</h2>
-            {cart.map((item) => (
-              <div key={item.id} className='flex items-center justify-start gap-2'>
-                <img src={item.image} alt='product-name' className='w-[75px] h-[75px]' />
-                <div>
-                  <h3 className='text-lg font-bold'>{item.name}</h3>
-                  <p className='text-sm'>{formatPrice(item.price)}</p>
-                  <p className='text-sm'>Quantity: {item.quantity}</p>
-                  <hr className='my-2' />
+            <p className='text-sm'>Total Items: {quantities.length}</p>
+            <div className='my-2 max-h-72 overflow-auto'>
+              {cart.map((item) => (
+                <div key={item.id} className='flex items-center justify-between gap-2 border-b-2 border-dashed border-slate-300 p-4'>
+                  <div className='flex items-center gap-2'>
+                    <img src={item.image} alt='product-name' className='w-[75px] h-[75px]' />
+                    <div>
+                      <h3 className='text-lg font-bold'>{item.name}</h3>
+                      <p className='text-sm'>{formatPrice(item.price)}</p>
+                      <p className='text-sm'>Quantity: {item.quantity}</p>
+                    </div>
+                  </div>
+                  <h2 className='text-lg'>Subtotal: {formatPrice(item.price * item.quantity)}</h2>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
             <div className='mt-4'>
-              <h3 className='text-lg font-bold'>Total: {formatNumber(total)}</h3>
+              <h3 className='text-lg font-bold'>Total: {formatPrice(total)}</h3>
             </div>
             <div className='mt-4'>
               <button className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded' onClick={closeModal}>
-                Proced to Checkout
+                Proceed to Checkout
               </button>
             </div>
           </div>
