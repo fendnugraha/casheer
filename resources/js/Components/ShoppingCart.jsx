@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faRotate, faTrash, faCartShopping, faMinus, faSquareMinus } from "@fortawesome/free-solid-svg-icons";
 import Modal from "./Modal";
-function ShoppingCart({ cart, updateCartQuantities }) {
+function ShoppingCart({ cart, updateCartQuantities, updateProductPrice }) {
   const [total, setTotal] = useState(0);
   const [quantities, setQuantities] = useState(cart);
   const checkoutUrl = "https://api.whatsapp.com/send?phone=0881022122200&text=Hello%20World%20from%20React";
@@ -23,12 +23,14 @@ function ShoppingCart({ cart, updateCartQuantities }) {
     const updatedQuantities = quantities.map((item) => (item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item));
     setQuantities(updatedQuantities);
     updateCartQuantities(updatedQuantities);
+    updateProductPrice(product.price);
   }
 
   function removeQuantity(product) {
     const updatedQuantities = quantities.map((item) => (item.id === product.id ? { ...item, quantity: item.quantity - 1 } : item));
     setQuantities(updatedQuantities);
     updateCartQuantities(updatedQuantities);
+    updateProductPrice(product.price);
   }
 
   const checkout = () => {
@@ -75,7 +77,7 @@ function ShoppingCart({ cart, updateCartQuantities }) {
               <div className='flex mt-5 items-center justify-between gap-2 border-b pb-3'>
                 <div className='relative'>
                   <img src={item.image} alt='product-name' className='w-[75px] h-[75px] rounded-lg' />
-                  <button className='absolute -top-2 -left-1 bg-white p-2 h-6 w-6 rounded-full flex items-center justify-center'>
+                  <button className='absolute -top-2 -left-2 bg-white p-2 h-6 w-6 rounded-full flex items-center justify-center scale-75 hover:scale-100 hover:bg-red-400 hover:text-white transition ease-in-out'>
                     <FontAwesomeIcon icon={faMinus} onClick={() => removeFromCart(item)} />
                   </button>
                 </div>
