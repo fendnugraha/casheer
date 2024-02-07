@@ -104,7 +104,8 @@ export default function Products({ products, categories }) {
           {filterProducts(products, search).map((product) => (
             <div className='group card w-[220px] bg-slate-200 hover:shadow-lg hover:shadow-slate-400 hover:bg-slate-100 p-3 mt-3 rounded-xl cursor-pointer hover:scale-105 transition-all delay-150 duration-300 ease-in-out' key={product.id}>
               <div className='relative'>
-                <img src={product.image} alt='product' height={200} width={200} className='rounded-lg group-hover:scale-105 transition delay-500 duration-500 ease-in-out' />
+                {/* <img src={product.image} alt='product' height={200} width={200} className='rounded-lg group-hover:scale-105 transition delay-500 duration-500 ease-in-out' /> */}
+                <div className='rounded-lg h-[200px] w-[200px] group bg-cover bg-center' style={{ backgroundImage: `url(${product.image})` }} aria-hidden='true'></div>
                 <div className='absolute left-2 top-2'>
                   <span className='bg-white text-black px-2 py-1 rounded-lg text-xs mr-2'>Stock: {product.stock}</span>
                   <span className='bg-white text-black px-2 py-1 rounded-lg text-xs'>{product.category.name}</span>
@@ -137,14 +138,15 @@ export default function Products({ products, categories }) {
             <div className='flex flex-col justify-between'>
               <div>
                 <h3 className='text-3xl font-bold'>{productDetail.name}</h3>
-                <small className='text-xs text-slate-600'>{productDetail.code}</small>
-                <p className='text-md'>{productDetail.description}</p>
-                Set Price: <input type='number' value={productDetail.price} className='p-2 rounded-lg' onChange={(e) => updateProductPrice(e.target.value)} />
-                <input type='number' value={productDetail.quantity === 0 ? 1 : productDetail.quantity} className='p-2 rounded-lg w-24 ml-1' onChange={(e) => updateProductQuantities(e.target.value)} /> Pcs
-                <p className='text-sm'>Stock: {productDetail.stock}</p>
+                <small className='text-xs text-slate-600'>
+                  {productDetail.code} | Stock: {productDetail.stock}
+                </small>
+                <p className='text-md mb-2'>{productDetail.description}</p>
+                Set Price: <input type='number' value={productDetail.price} className='p-2 rounded-lg' onChange={(e) => updateProductPrice(parseInt(e.target.value))} />
+                <input type='number' value={productDetail.quantity === 0 ? 1 : productDetail.quantity} className='p-2 rounded-lg w-24 ml-1' onChange={(e) => updateProductQuantities(parseInt(e.target.value))} /> Pcs
               </div>
               <div>
-                <button className='p-2 bg-slate-800 text-white rounded-lg hover:bg-slate-600 transition-all' onClick={() => toggleAddToCartWithQuantity(productDetail)} disabled={productDetail.length > 0}>
+                <button className='p-2 bg-slate-800 text-white rounded-lg hover:bg-slate-600 transition-all mt-3' onClick={() => toggleAddToCartWithQuantity(productDetail)} disabled={productDetail.length > 0}>
                   Add to cart
                 </button>
               </div>

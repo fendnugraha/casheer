@@ -8,6 +8,7 @@ function ShoppingCart({ cart, updateCartQuantities, updateProductPrice }) {
   const checkoutUrl = "https://api.whatsapp.com/send?phone=0881022122200&text=Hello%20World%20from%20React";
   const formatNumber = (number) => new Intl.NumberFormat("id-ID").format(number);
   const [showModal, setShowModal] = useState(false);
+  const [confirmClearCart, setConfirmClearCart] = useState(false);
 
   useEffect(() => {
     setQuantities(cart);
@@ -56,9 +57,14 @@ function ShoppingCart({ cart, updateCartQuantities, updateProductPrice }) {
     setShowModal(false);
   };
 
+  const confirmClear = () => {
+    setConfirmClearCart(true);
+  };
   const clearCart = () => {
     setQuantities([]);
     updateCartQuantities([]);
+
+    setConfirmClearCart(false);
   };
 
   return (
@@ -103,34 +109,52 @@ function ShoppingCart({ cart, updateCartQuantities, updateProductPrice }) {
           ))}
         </div>
         <Modal show={showModal} onClose={closeModal} maxWidth='2xl'>
-          <div className='p-6'>
+          <div className='p-2'>
             <h2 className='text-2xl font-bold'>Order Summary</h2>
             <p className='text-sm'>Total Items: {quantities.length}</p>
-            <div className='my-2 max-h-72 overflow-auto'>
-              {cart.map((item) => (
-                <div key={item.id} className='flex items-center justify-between gap-2 border-b-2 border-dashed border-slate-300 p-4'>
-                  <div className='flex items-center gap-2'>
-                    <img src={item.image} alt='product-name' className='w-[75px] h-[75px] rounded-lg' />
-                    <div>
-                      <h3 className='text-lg font-bold'>{item.name}</h3>
-                      <p className='text-sm'>{formatPrice(item.price)}</p>
-                      <p className='text-sm'>Quantity: {item.quantity}</p>
+            <div className='grid grid-cols-3'>
+              <div className='my-2 max-h-72 overflow-auto col-span-2'>
+                {cart.map((item) => (
+                  <div key={item.id} className='flex items-center justify-between gap-2 border-b-2 border-dashed border-slate-300 p-4'>
+                    <div className='flex items-center gap-2'>
+                      <img src={item.image} alt='product-name' className='w-[75px] h-[75px] rounded-lg' />
+                      <div>
+                        <h3 className='text-md font-bold'>{item.name}</h3>
+                        <p className='text-sm'>{formatPrice(item.price)}</p>
+                        <p className='text-sm'>Quantity: {item.quantity}</p>
+                      </div>
+                    </div>
+                    <div className='text-end'>
+                      <h2 className='text-xs'>Subtotal</h2>
+                      <h2 className='text-lg'>{formatPrice(item.price * item.quantity)}</h2>
                     </div>
                   </div>
-                  <div className='text-end'>
-                    <h2 className='text-xs'>Subtotal</h2>
-                    <h2 className='text-lg'>{formatPrice(item.price * item.quantity)}</h2>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              <div className='p-2'>
+                <h3 className='text-xl font-bold'>Customer Details</h3>
+                <label htmlFor='name'>Name</label>
+                <input type='text' id='name' className='border border-slate-300 w-full p-1 rounded-lg' />
+                <label htmlFor='email'>Payment Method</label>
+                <select id='payment-method' className='border border-slate-300 w-full p-1 rounded-lg'>
+                  <option value='cash'>Cash</option>
+                  <option value='transfer'>Transfer</option>
+                  <option value='cod'>COD</option>
+                  <option value='gopay'>Credit</option>
+                  <option value='other'>Other</option>
+                </select>
+                <label htmlFor='phone'>Phone</label>
+                <input type='text' id='phone' className='border border-slate-300 w-full p-1 rounded-lg' />
+              </div>
             </div>
-            <div className='mt-4'>
-              <h3 className='text-lg font-bold'>Total: {formatPrice(total)}</h3>
-            </div>
-            <div className='mt-4'>
+            <div className='flex justify-between items-end mt-4'>
               <button className='bg-slate-800 text-white p-2 rounded-lg font-bold py-2 px-4' onClick={closeModal}>
                 Proceed to Checkout
               </button>
+              <div className=''>
+                <h3 className='text-xs text-slate-400'>Total</h3>
+                <h3 className='text-2xl font-bold'>{formatPrice(total)}</h3>
+              </div>
             </div>
           </div>
         </Modal>
@@ -147,13 +171,31 @@ function ShoppingCart({ cart, updateCartQuantities, updateProductPrice }) {
               <button className=' bg-slate-800 text-white p-2 rounded-lg col-span-2' onClick={() => checkout(cart)}>
                 Checkout
               </button>
-              <button className=' bg-red-500 text-white p-2 rounded-lg' onClick={clearCart}>
+              <button className=' bg-red-500 text-white p-2 rounded-lg' onClick={() => confirmClear()}>
                 <FontAwesomeIcon icon={faRotate} />
               </button>
             </div>
           </>
         )}
       </div>
+      <Modal show={confirmClearCart} onClose={() => setConfirmClearCart(false)} maxWidth='2xl'>
+        <div className='p-2'>
+          <div className='bg-white p-4 rounded-lg'>
+            <h2 className='text-2xl font-bold'>Clear Cart</h2>
+            <p>Are you sure you want to clear the cart?</p>
+            <div className='flex justify-between mt-4'>
+              {/* Confirm button */}
+              <button className='bg-red-500 text-white px-4 py-2 rounded-lg mr-4' onClick={clearCart}>
+                Confirm
+              </button>
+              {/* Cancel button */}
+              <button className='bg-gray-300 text-gray-800 px-4 py-2 rounded-lg' onClick={() => setConfirmClearCart(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
