@@ -23,7 +23,7 @@ class ProductFactory extends Factory
             'price' => $this->faker->numberBetween(100, 1000) * 100,
             'cost' => $this->faker->randomFloat(2, 0, 100),
             'image' => $this->faker->imageUrl(200, 200),
-            'category_id' => $this->faker->numberBetween(1, 4),
+            'category_id' => $this->faker->numberBetween(1, 7),
             'stock' => $this->faker->numberBetween(1, 100),
             'status' => $this->faker->randomElement(['active', 'inactive']),
             'slug' => $this->faker->slug

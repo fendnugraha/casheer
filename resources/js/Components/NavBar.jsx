@@ -1,9 +1,15 @@
-import { Link } from "@inertiajs/react";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import NavLink from "./NavLink";
 
 export default function NavBar() {
+  const [isActive, setIsActive] = useState(false);
+
+  function toggleActive() {
+    setIsActive(!isActive);
+  }
   return (
     <>
       <nav className='bg-slate-800 h-16'>
@@ -13,24 +19,29 @@ export default function NavBar() {
           </div>
           <ul className='flex gap-5 text-white'>
             <li>
-              <a href='#' className='hover:text-yellow-100'>
+              <NavLink href='#' className='hover:text-yellow-100'>
                 Home
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a href='#' className='hover:text-yellow-100'>
+              <NavLink href='/sales' className='hover:text-yellow-100' active={isActive}>
+                Sales Order
+              </NavLink>
+            </li>
+            <li>
+              <NavLink href='#' className='hover:text-yellow-100' active={isActive} onClick={() => toggleActive}>
+                Purchase Order
+              </NavLink>
+            </li>
+            <li>
+              <NavLink href='#' className='hover:text-yellow-100'>
                 About
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a href='#' className='hover:text-yellow-100'>
+              <NavLink href='#' className='hover:text-yellow-100'>
                 Contact
-              </a>
-            </li>
-            <li>
-              <a href='#' className='hover:text-yellow-100'>
-                <FontAwesomeIcon icon={faCartShopping} />
-              </a>
+              </NavLink>
             </li>
           </ul>
         </div>
@@ -38,19 +49,19 @@ export default function NavBar() {
       <div className='sub-nav bg-gray-600 p-1 flex justify-center'>
         <ul className='flex gap-3 text-white'>
           <li>
-            <a href='#' className='hover:text-yellow-100'>
+            <NavLink href='/products' className='hover:text-yellow-100'>
               List of product
-            </a>
+            </NavLink>
           </li>
           <li>
-            <a href='#' className='hover:text-yellow-100'>
+            <NavLink href='#' className='hover:text-yellow-100'>
               Transaction
-            </a>
+            </NavLink>
           </li>
           <li>
-            <a href='#' className='hover:text-yellow-100'>
+            <NavLink href='#' className='hover:text-yellow-100'>
               Report
-            </a>
+            </NavLink>
           </li>
         </ul>
       </div>

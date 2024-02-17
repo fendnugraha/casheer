@@ -3,6 +3,7 @@
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SalesController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,14 +19,14 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -48,6 +49,7 @@ Route::controller(JournalController::class)->group(function () {
 });
 
 Route::controller(ProductController::class)->group(function () {
+    Route::get('/', 'index')->name('products');
     Route::get('/products', 'index')->name('products');
     Route::get('/products/create', 'create')->name('products.create');
     Route::post('/products', 'store')->name('products.store');
@@ -55,6 +57,10 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/products/{product}/edit', 'edit')->name('products.edit');
     Route::put('/products/{product}', 'update')->name('products.update');
     Route::delete('/products/{product}', 'destroy')->name('products.destroy');
+});
+
+Route::controller(SalesController::class)->group(function () {
+    Route::get('/sales', 'index')->name('sales');
 });
 
 

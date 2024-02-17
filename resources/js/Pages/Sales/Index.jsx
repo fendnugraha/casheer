@@ -2,15 +2,16 @@ import React from "react";
 import NavBar from "@/Components/NavBar";
 import { Head } from "@inertiajs/react";
 import Paginator from "@/Components/Paginator";
-import Products from "@/Components/Products";
+import Sales from "@/Components/Sales";
 
 export default function Index({ products, title, categories }) {
+  const formatNumber = (number) => new Intl.NumberFormat("id-ID").format(number);
   return (
     <>
       <Head title={title} />
       <NavBar />
       <div className='container mx-auto mt-5 h-[80vh]'>
-        <Products products={products} categories={categories} />
+        <Sales products={products} categories={categories} />
       </div>
     </>
   );

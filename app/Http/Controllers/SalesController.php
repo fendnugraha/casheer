@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Product;
-use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use App\Models\ProductCategory;
 
-class ProductController extends Controller
+class SalesController extends Controller
 {
     public function index()
     {
         $categories = ProductCategory::all();
-        $products = Product::with('category')->paginate(5);
-        return Inertia::render('Products/Index', [
-            'products' => $products,
+        return Inertia::render('Sales/Index', [
+            'products' => Product::with('category')->get(),
+            'active' => true,
             'title' => 'Products Page',
             'description' => 'List of all products',
             'categories' => $categories,

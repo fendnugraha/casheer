@@ -26,28 +26,42 @@ class DatabaseSeeder extends Seeder
 
         ProductCategory::insert([
             [
-                'name' => 'Food',
-                'slug' => 'food'
+                'name' => 'Movies',
+                'slug' => 'movies'
             ],
 
             [
-                'name' => 'Drink',
-                'slug' => 'drink'
+                'name' => 'Books',
+                'slug' => 'books'
             ],
 
             [
-                'name' => 'Snack',
-                'slug' => 'snack'
+                'name' => 'Games',
+                'slug' => 'games'
+            ],
+
+            [
+                'name' => 'Music',
+                'slug' => 'music'
+            ],
+
+            [
+                'name' => 'Electronics',
+                'slug' => 'electronics'
+            ],
+
+            [
+                'name' => 'Foods',
+                'slug' => 'foods'
             ],
 
             [
                 'name' => 'Others',
                 'slug' => 'others'
             ],
-
         ]);
 
         Journal::factory(10)->create();
-        Product::factory(30)->create();
+        Product::factory(50)->create();
     }
 }
